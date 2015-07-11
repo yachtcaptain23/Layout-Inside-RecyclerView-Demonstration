@@ -1,9 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="5dp"
-    android:text="hello"
-    >
+    android:layout_height="100dp"
+    android:stretchColumns="1"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-</TextView>
+    <TableRow>
+        <TextView
+            android:layout_height="30dp"
+            android:paddingTop="5dp"
+            android:text="hello"
+            android:gravity="start"
+            android:layout_weight="1"
+            android:id="@+id/topleft_todo_row" />
+
+        <TextView
+            android:layout_height="30dp"
+            android:gravity="end"
+            android:paddingTop="5dp"
+            android:text="bye"
+            android:layout_weight="1"
+            android:id="@+id/topright_todo_row" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:text="comment"
+            android:gravity="center_horizontal"
+            android:layout_weight="1"
+            android:id="@+id/bottomleft_todo_row" />
+
+        <TextView
+            android:gravity="end"
+            android:text="duration"
+            android:layout_weight="1"
+            android:id="@+id/bottomright_todo_row"
+            />
+    </TableRow>
+</TableLayout>
+
+

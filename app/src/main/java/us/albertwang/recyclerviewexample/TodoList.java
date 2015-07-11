@@ -16,7 +16,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TableLayout;
 import android.widget.TextView;
+
+import java.util.Random;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -62,6 +65,7 @@ public class TodoList extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate for TodoList");
         mContext = getApplicationContext();
 
         final View contentView = findViewById(R.id.my_recycler_view);
@@ -86,6 +90,8 @@ public class TodoList extends Activity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        Log.d(TAG, "TodoList.onCreate @ setLayoutManager");
+
         // specify an adapter (see also next example)
         mAdapter = new MyAdapter(myDataset);
         mRecyclerView.setAdapter(mAdapter);
@@ -95,6 +101,8 @@ public class TodoList extends Activity {
 
             }
         });
+
+        Log.d(TAG, "Finished onCreate for LinearLayoutManager");
     }
 
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
@@ -109,9 +117,31 @@ public class TodoList extends Activity {
             public TextView mTextViewTask;
             public TextView mTextViewComment;
             public TextView mTextViewCountdown;
-            public ViewHolder(TextView v) {
+            public TextView mTextViewDate;
+            public ViewHolder(View v) {
                 super(v);
-                mTextViewTask = v;
+                Log.d(TAG, "Called super from ViewHolder constructor for layout");
+                mTextViewTask = (TextView) v.findViewById(R.id.topleft_todo_row);
+                mTextViewDate = (TextView) v.findViewById(R.id.topright_todo_row);
+                mTextViewComment = (TextView) v.findViewById(R.id.bottomleft_todo_row);
+                mTextViewCountdown = (TextView) v.findViewById(R.id.bottomright_todo_row);
+            }
+            public ViewHolder(TextView task, TextView date, TextView comment, TextView countdown) {
+                super(task);
+
+                Log.d(TAG, "Called super from ViewHolder constructor");
+                mTextViewTask = task;
+                mTextViewDate = date;
+                mTextViewComment = comment;
+                mTextViewCountdown = countdown;
+
+            }
+
+            public ViewHolder(TextView task) {
+                super(task);
+
+                Log.d(TAG, "Called super from ViewHolder constructor");
+                mTextViewTask = task;
             }
         }
 
@@ -124,13 +154,16 @@ public class TodoList extends Activity {
         @Override
         public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                        int viewType) {
-            // create a new view
-            // TextView minitv = new TextView(mContext);
-            // minitv.setText("Hello world");
-            Log.d(TAG, "onCreateViewHolder");
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_text_view, parent, false);
+
+            View todo_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_text_view, parent, false);
+            /* TextView due_view = (TextView) v.findViewById(R.id.topright_todo_row);
+            TextView comment_view = (TextView) v.findViewById(R.id.bottomleft_todo_row);
+            TextView duration_view = (TextView) v.findViewById(R.id.bottomright_todo_row); */
+
             // set the view's size, margins, paddings and layout parameters
-            mViewHolder = new ViewHolder((TextView) v);
+            // mViewHolder = new ViewHolder(todo_view, due_view, comment_view, duration_view);
+            mViewHolder = new ViewHolder(todo_view);
+            Log.d(TAG, "Finished onCreate");
             return mViewHolder;
         }
 
@@ -139,8 +172,12 @@ public class TodoList extends Activity {
         public void onBindViewHolder(ViewHolder holder, int position) {
             // - get element from your dataset at this position
             // - replace the contents of the view with that element
+            Log.d(TAG, "start changing view");
             holder.mTextViewTask.setText(mDataset[position]);
-            //holder.
+
+            holder.mTextViewDate.setText("" + (new Random()).nextInt(10));
+            holder.mTextViewComment.setText("Why you no work?");
+            Log.d(TAG, "changing view");
 
         }
 
